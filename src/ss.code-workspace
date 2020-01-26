@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"name": "TmpSensor",
+			"path": "C:\\OneDrive-Personal\\OneDrive\\_Arduino\\Nove Projekty\\TmpSensor"
+		},
+		{
+			"name": "ESP01_Tmp",
+			"path": "C:\\OneDrive-Personal\\OneDrive\\_Arduino\\Nove Projekty\\ESP01_Tmp"
+		}
+	],
+	"settings": {
+		"terminal.integrated.env.windows": {
+			"PATH": "C:\\Users\\jakub.urban\\.platformio\\penv\\Scripts;C:\\Users\\jakub.urban\\.platformio\\penv;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\nodejs\\;C:\\Users\\jakub.urban\\AppData\\Local\\Programs\\Python\\Python36;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\nodejs\\;C:\\Users\\jakub.urban\\AppData\\Local\\Programs\\Python\\Python36;C:\\Users\\jakub.urban\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Python 3.6\\Scripts;C:\\Python36\\Scripts;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\nodejs\\;C:\\Users\\jakub.urban\\AppData\\Local\\Programs\\Python\\Python36;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\nodejs\\;C:\\Users\\jakub.urban\\AppData\\Local\\Programs\\Python\\Python36;C:\\Users\\jakub.urban\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Python 3.6\\Scripts;C:\\Python36\\Scripts",
+			"PLATFORMIO_CALLER": "vscode"
+		}
+	}
+}
