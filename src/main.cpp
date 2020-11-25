@@ -16,12 +16,10 @@ AM2320 senzor;
 DHT mojeDHT(DHTPIN, typDHT11);
 
 //----------------  Fill in your credentails   ---------------------
-char ssid[] = "Netis_Kuba_1";             // your network SSID (name) 
-char pass[] = "";         // your network password 
-//char ssid[] = "UDvouChlupacu";             // your network SSID (name) 
-//char pass[] = "Neperliva2";         // your network password 
-unsigned long myChannelNumber = 318641;  // Replace the 0 with your channel number
-const char * myWriteAPIKey = "13IVW9HLQW68FKHQ";    // Paste your ThingSpeak Write API Key between the quotes 
+char ssid[] = "wifiname";             // your network SSID (name) 
+char pass[] = "pass";         // your network password 
+unsigned long myChannelNumber = 0;  // Replace the 0 with your channel number
+const char * myWriteAPIKey = "maykey";    // Paste your ThingSpeak Write API Key between the quotes 
 //------------------------------------------------------------------
 float teplota;
 float vlhkost;
