@@ -2,44 +2,37 @@
 
 // připojení potřebných knihoven
 #include <Wire.h>
-#include <thingspeak-arduino-master/src/ThingSpeak.h>
+#include <ThingSpeak.h>
 #include <ESP8266WiFi.h>
-#include <ESP8266mDNS.h>
-#include <WiFiUdp.h>
 #include <DHT.h>
-#include <NTPClient-master/NTPClient.h>
+#include <ArduinoOTA.h>
 
 // inicializace modulu z knihovny
-
 #define DHTPIN 2
 #define DHTType DHT11
 
 DHT mojeDHT(DHTPIN, DHTType);
 
 //----------------  Fill in your credentails   ---------------------
-char ssid[] = "";                   // your network SSID (name)
-char pass[] = "";              // your network password
-unsigned long myChannelNumber = 0;         // Replace the 0 with your channel number
-const char *myWriteAPIKey = ""; // Paste your ThingSpeak Write API Key between the quotes
+const char* ssid = "internet50";                   // your network SSID (name)
+const char* pass = "12041996Au";              // your network password
+unsigned long myChannelNumber = 318641;         // Replace the 0 with your channel number
+const char *myWriteAPIKey = "13IVW9HLQW68FKHQ"; // Paste your ThingSpeak Write API Key between the quotes
 //------------------------------------------------------------------
-float teplota;
-float vlhkost;
-const long utcOffsetInSeconds = 3600;
+float temp;
+float lastTemp = 0;
+float hum;
+float lastHum = 0;
+
 
 WiFiClient client;
-// Define NTP Client to get time
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
 
 void setup()
 {
-  // zahájení komunikace po sériové lince
-  // rychlostí 9600 baud
-  Serial.begin(9600);
+
   WiFi.mode(WIFI_STA);
   ThingSpeak.begin(client);
   mojeDHT.begin();
-  timeClient.begin();
 
   // Connect or reconnect to WiFi
   if (WiFi.status() != WL_CONNECTED)
@@ -54,41 +47,73 @@ void setup()
     }
     Serial.println("\nConnected.");
   }
+
+
+  // Port defaults to 8266
+  // ArduinoOTA.setPort(8266);
+
+  // Hostname defaults to esp8266-[ChipID]
+  // ArduinoOTA.setHostname("myesp8266");
+
+  // No authentication by default
+  // ArduinoOTA.setPassword("admin");
+
+  // Password can be set with it's md5 value as well
+  // MD5(admin) = 21232f297a57a5a743894a0e4a801fc3
+  // ArduinoOTA.setPasswordHash("21232f297a57a5a743894a0e4a801fc3");
+
+  ArduinoOTA.onStart([]() {
+    String type;
+    if (ArduinoOTA.getCommand() == U_FLASH)
+      type = "sketch";
+    else // U_SPIFFS
+      type = "filesystem";
+
+    // NOTE: if updating SPIFFS this would be the place to unmount SPIFFS using SPIFFS.end()
+    Serial.println("Start updating " + type);
+  });
+  ArduinoOTA.onEnd([]() {
+    Serial.println("\nEnd");
+  });
+  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
+    Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
+  });
+  ArduinoOTA.onError([](ota_error_t error) {
+    Serial.printf("Error[%u]: ", error);
+    if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
+    else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
+    else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
+    else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
+    else if (error == OTA_END_ERROR) Serial.println("End Failed");
+  });
+  ArduinoOTA.begin();
 }
 
 void mereni()
 {
-  float tep = mojeDHT.readTemperature() - 1.5;
-  float vlh = mojeDHT.readHumidity();
-  ThingSpeak.setField(1, tep);
-  ThingSpeak.setField(2, vlh);
-  ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
+  temp = mojeDHT.readTemperature() - 1.5;
+  hum = mojeDHT.readHumidity();
+
+  if (temp != lastTemp)
+  {
+    lastTemp = temp;
+    ThingSpeak.setField(1,lastTemp);
+  }
+  if (hum != lastHum)
+  {
+    lastHum = hum;
+    ThingSpeak.setField(2,lastHum);
+  }
+
+  if (temp != lastTemp || hum != lastHum)
+  {
+    ThingSpeak.writeFields(myChannelNumber,myWriteAPIKey);
+  }
 }
 
 void loop()
 {
-
-  timeClient.update();
-  int min = timeClient.getMinutes();
-
-  switch (min)
-  {
-  case 0:
-    mereni();
-    break;
-
-  case 15:
-    mereni();
-    break;
-
-  case 30:
-    mereni();
-    break;
-
-  case 45:
-    mereni();
-    break;
-  }
-
-  delay(20000);
+  ArduinoOTA.handle();
+  mereni();
+  delay(1000*60*20);
 }
